@@ -1,0 +1,40 @@
+// Version: 4.0.0
+type ForexPair__141508281 =
+  {
+    ask : Float;
+    bid : Float;
+    changePercent : Float;
+    isUp : Bool;
+    symbol : Text
+  };
+type ForexPair__244953250 =
+  {
+    ask : Float;
+    bid : Float;
+    changePercent : Float;
+    isUp : Bool;
+    symbol : PairSymbol__191474314
+  };
+type List__529703492<T> =
+  {
+    var blockIndex : Nat__1040412405;
+    var blocks : [var [var ?T]];
+    var elementIndex : Nat__1040412405
+  };
+type List__560604548<T> = List__529703492<T>;
+type Nat__1040412405 = Nat__920180692;
+type Nat__920180692 = Nat;
+type NewActor__678550835 = {pairs : List__560604548<ForexPair__141508281>};
+type OldActor__51137366 = {};
+type PairSymbol__191474314 = Text;
+{
+  "20260614_120000_InitForex" : OldActor__51137366 -> NewActor__678550835
+}
+actor  {
+  stable pairs :
+    {
+      var blockIndex : Nat__1040412405;
+      var blocks : [var [var ?ForexPair__244953250]];
+      var elementIndex : Nat__1040412405
+    }
+};

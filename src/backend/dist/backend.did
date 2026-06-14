@@ -1,0 +1,16 @@
+type PairSymbol = text;
+type ForexPair = 
+ record {
+   ask: float64;
+   bid: float64;
+   changePercent: float64;
+   isUp: bool;
+   symbol: PairSymbol;
+ };
+service : {
+  __pairs: (io: opt nat, count: opt nat) -> (vec ForexPair) query;
+  addPair: (symbol: text) -> ();
+  getPairs: () -> (vec ForexPair) query;
+  removePair: (symbol: text) -> ();
+  updatePrices: (updates: vec ForexPair) -> ();
+}

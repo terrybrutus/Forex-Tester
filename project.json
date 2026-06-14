@@ -1,0 +1,17 @@
+{
+  "overview": "A simple forex dashboard that tracks currency pairs with live bid/ask prices.",
+  "features": [
+    "Display forex pairs with bid/ask prices",
+    "Auto-refresh prices every 30 seconds",
+    "Add and remove currency pairs",
+    "Responsive layout"
+  ],
+  "category": "dashboard",
+  "tags": [
+    "finance",
+    "forex",
+    "currency",
+    "tracking"
+  ],
+  "last_updated": "2026-06-14T05:22:46.255Z"
+}
