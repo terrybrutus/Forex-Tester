@@ -9,7 +9,10 @@
       "build/**",
       "*.config.js",
       "src/declarations/**",
-      "src/config.ts"
+      "src/config.ts",
+      "src/components/ui/**",
+      "src/hooks/use-mobile.tsx",
+      "src/lib/utils.ts"
     ]
   },
   "formatter": {
