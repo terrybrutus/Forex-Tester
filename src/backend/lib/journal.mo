@@ -7,7 +7,7 @@ module {
   };
 
   public func addEntry(entries: List.List<Types.JournalEntry>, entry: Types.JournalEntry) : List.List<Types.JournalEntry> {
-    List.push(entry, entries)
+    List.put(entry, entries)
   };
 
   public func clearEntries(_entries: List.List<Types.JournalEntry>) : List.List<Types.JournalEntry> {
