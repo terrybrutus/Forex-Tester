@@ -1,153 +1,151 @@
-export type PairSymbol = string;
+export type InstrumentCode =
+  | "M6E"
+  | "M6B"
+  | "M6J"
+  | "M6A"
+  | "MCL"
+  | "MGC"
+  | "MES"
+  | "ZN";
 
-export type TradeDirection = "Long" | "Short" | "Neutral";
+export type StrategyId =
+  | "trend-pullback"
+  | "session-breakout"
+  | "macro-continuation";
 
-export type VolatilityState = "Dead" | "Normal" | "HighQuality" | "Chaotic";
+export type TradeDirection = "Long" | "Short";
+export type ResearchStatus = "Research only" | "Qualified" | "Rejected";
 
-export type SessionName = "Asia" | "London" | "NewYork" | "Overlap" | "AfterNY" | "OffHours";
-
-export type StrategyType = "TrendPullback" | "BreakoutContinuation" | "MeanReversion" | "None";
-
-export type TradeResult = "Win" | "Loss" | "BreakEven" | "Open";
-
-export interface CandleData {
-  time: number;
+export interface Candle {
+  timestamp: number;
   open: number;
   high: number;
   low: number;
   close: number;
-  volume?: number;
+  volume: number;
 }
 
-export interface PairMarketData {
-  symbol: PairSymbol;
-  bid: number;
-  ask: number;
-  changePercent: number;
-  isUp: boolean;
-  candles: {
-    m5: CandleData[];
-    m15: CandleData[];
-    h1: CandleData[];
-    h4: CandleData[];
-    d1: CandleData[];
-  };
-  spread: number;
-  atr14: number;
-  ema50: number;
-  ema200: number;
+export interface InstrumentSpec {
+  code: InstrumentCode;
+  name: string;
+  contextRole: string;
+  tickSize: number;
+  tickValue: number;
+  roundTurnCommission: number;
+  maxContracts: number;
 }
 
-export interface CurrencyStrength {
-  currency: string;
-  score: number;
-  rank: number;
-}
-
-export interface ScannerRow {
-  symbol: PairSymbol;
-  bias: TradeDirection;
-  score: number;
-  strategy: StrategyType;
-  currencyStrengthScore: number;
-  trendScore: number;
-  volatilityState: VolatilityState;
-  sessionScore: number;
-  spread: number;
-  stopDistance: number;
-  targetDistance: number;
-  suggestedLotSize: number;
-  newsStatus: "Clear" | "Warning" | "Blocked";
-  nextNewsMinutes: number | null;
-  entryPrice: number;
-  stopLoss: number;
-  takeProfit: number;
-  riskReward: number;
-  reasons: string[];
-  invalidation: string;
-}
-
-export interface PropFirmSettings {
-  accountSize: number;
-  dailyLossPercent: number;
-  maxLossPercent: number;
-  profitTargetPercent: number;
-  maxTradesPerDay: number;
-  maxRiskPerTrade: number;
-  newsTrading: boolean;
-  overnightHolding: boolean;
-  weekendHolding: boolean;
-  eaAutomation: boolean;
-  minProfitableDays: number;
-  firmName: string;
-}
-
-export interface AccountState {
-  balance: number;
-  equity: number;
-  dailyPnL: number;
-  openRisk: number;
-  tradesToday: number;
-  consecutiveLosses: number;
-}
-
-export interface NewsEvent {
+export interface Dataset {
   id: string;
-  time: number;
-  currency: string;
-  event: string;
-  impact: "High" | "Medium" | "Low";
-  forecast: string;
-  previous: string;
-  actual: string;
+  name: string;
+  instrument: InstrumentCode;
+  source: "Fixture" | "Imported CSV" | "Databento";
+  timeframeMinutes: number;
+  candles: Candle[];
+  importedAt: number;
 }
 
-export interface TradeCard {
-  symbol: PairSymbol;
+export interface StrategyParameters {
+  fastEma: number;
+  slowEma: number;
+  atrPeriod: number;
+  stopAtr: number;
+  targetR: number;
+  breakoutLookback: number;
+  volumeMultiplier: number;
+  sessionStartHourEt: number;
+  sessionEndHourEt: number;
+  maxRiskDollars: number;
+}
+
+export interface StrategyDefinition {
+  id: StrategyId;
+  name: string;
+  version: string;
+  thesis: string;
+  parameters: StrategyParameters;
+}
+
+export interface SignalEvidence {
+  family: string;
+  label: string;
+  supports: boolean;
+  detail: string;
+}
+
+export interface BacktestTrade {
+  id: string;
+  strategyId: StrategyId;
+  instrument: InstrumentCode;
   direction: TradeDirection;
-  score: number;
-  strategy: StrategyType;
+  entryTime: number;
+  exitTime: number;
   entry: number;
-  stopLoss: number;
-  takeProfit: number;
-  riskReward: number;
-  lotSize: number;
-  riskAmount: number;
-  rewardAmount: number;
-  reasons: string[];
-  invalidation: string;
-  newsWarning: string | null;
-  propFirmStatus: "Allowed" | "Blocked";
-  blockReasons: string[];
-}
-
-export interface JournalEntry {
-  id: string;
-  timestamp: number;
-  pair: PairSymbol;
-  direction: TradeDirection;
-  score: number;
-  strategy: StrategyType;
-  session: SessionName;
-  volatilityState: VolatilityState;
-  entryPrice: number;
-  stopLoss: number;
-  takeProfit: number;
-  lotSize: number;
-  riskAmount: number;
-  result: TradeResult;
+  stop: number;
+  target: number;
+  exit: number;
+  contracts: number;
+  grossPnl: number;
+  netPnl: number;
   rMultiple: number;
-  notes: string;
-  ruleViolationsPrevented: string[];
+  exitReason: "Stop" | "Target" | "Session close";
+  evidence: SignalEvidence[];
 }
 
-export interface RiskCalculation {
-  lotSize: number;
-  dollarRisk: number;
-  pipRisk: number;
-  stopLoss: number;
-  takeProfit: number;
-  riskReward: number;
-  isAllowed: boolean;
-  blockReasons: string[];
+export interface BacktestMetrics {
+  trades: number;
+  wins: number;
+  losses: number;
+  winRate: number;
+  averageR: number;
+  expectancyR: number;
+  profitFactor: number;
+  netPnl: number;
+  maxDrawdown: number;
+  maxConsecutiveLosses: number;
+}
+
+export interface TopstepSimulation {
+  accountSize: number;
+  profitTarget: number;
+  maximumLossLimit: number;
+  personalDailyLossLimit: number;
+  passed: boolean;
+  failed: boolean;
+  endingBalance: number;
+  lowestBalance: number;
+  highestBalance: number;
+  maximumLossFloor: number;
+  bestDayPnl: number;
+  consistencyTargetMet: boolean;
+  failureReason: string | null;
+}
+
+export interface BacktestResult {
+  id: string;
+  createdAt: number;
+  datasetId: string;
+  contextDatasetId?: string;
+  strategy: StrategyDefinition;
+  trades: BacktestTrade[];
+  metrics: BacktestMetrics;
+  topstep: TopstepSimulation;
+  qualification: {
+    status: ResearchStatus;
+    reasons: string[];
+  };
+}
+
+export interface TradePlan {
+  instrument: InstrumentCode;
+  direction: TradeDirection;
+  contracts: number;
+  entry: number;
+  stop: number;
+  target: number;
+  estimatedRisk: number;
+  estimatedReward: number;
+  evidence: SignalEvidence[];
+  status: ResearchStatus;
+  blockedReasons: string[];
 }

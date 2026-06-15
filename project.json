@@ -1,17 +1,19 @@
 {
-  "overview": "A simple forex dashboard that tracks currency pairs with live bid/ask prices.",
+  "overview": "An evidence-driven futures strategy research and Topstep risk-governance platform.",
   "features": [
-    "Display forex pairs with bid/ask prices",
-    "Auto-refresh prices every 30 seconds",
-    "Add and remove currency pairs",
-    "Responsive layout"
+    "Import and cache historical futures OHLCV data",
+    "Run deterministic strategy backtests with costs",
+    "Simulate Topstep 50K account survival",
+    "Journal qualified and rejected strategy evidence",
+    "Enforce accessible zero-error quality gates"
   ],
-  "category": "dashboard",
+  "category": "finance research",
   "tags": [
     "finance",
-    "forex",
-    "currency",
-    "tracking"
+    "futures",
+    "backtesting",
+    "risk-management",
+    "topstep"
   ],
-  "last_updated": "2026-06-14T05:22:46.255Z"
+  "last_updated": "2026-06-15T00:00:00.000Z"
 }

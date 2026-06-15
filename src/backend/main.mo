@@ -1,20 +1,15 @@
 import List "mo:core/List";
 import MixinViews "mo:caffeineai-data-viewer/MixinViews";
 import ForexTypes "types/forex";
-import SettingsTypes "types/settings";
-import JournalTypes "types/journal";
-import SettingsLib "lib/settings";
+import ResearchTypes "types/research";
 import ForexApi "mixins/forex-api";
-import SettingsApi "mixins/settings-api";
-import JournalApi "mixins/journal-api";
+import ResearchApi "mixins/research-api";
 
 actor {
   let pairs : List.List<ForexTypes.ForexPair>;
-  var settings : SettingsTypes.PropFirmSettings = SettingsLib.getDefaultSettings();
-  let entries : List.List<JournalTypes.JournalEntry>;
+  let researchRecords : List.List<ResearchTypes.ResearchRecord>;
 
   include MixinViews();
   include ForexApi(pairs);
-  include SettingsApi(settings);
-  include JournalApi(entries);
+  include ResearchApi(researchRecords);
 };
