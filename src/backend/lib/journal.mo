@@ -2,15 +2,15 @@ import List "mo:core/List";
 import Types "../types/journal";
 
 module {
-  public func getEntries(entries: List.List<Types.JournalEntry>) : [Types.JournalEntry] {
-    List.toArray(entries)
+  public func getEntries(entries : List.List<Types.JournalEntry>) : [Types.JournalEntry] {
+    entries.toArray()
   };
 
-  public func addEntry(entries: List.List<Types.JournalEntry>, entry: Types.JournalEntry) : List.List<Types.JournalEntry> {
-    List.put(entry, entries)
+  public func addEntry(entries : List.List<Types.JournalEntry>, entry : Types.JournalEntry) : () {
+    entries.add(entry)
   };
 
-  public func clearEntries(_entries: List.List<Types.JournalEntry>) : List.List<Types.JournalEntry> {
-    List.empty()
+  public func clearEntries(entries : List.List<Types.JournalEntry>) : () {
+    entries.clear()
   };
 };
